@@ -26,7 +26,7 @@ Adafruit_PCF8574 pcf;
 Preferences extenderPreferences;
 
 #define EXPANDER_PORTS 8 // number of ports of PCF8574
-#define buttonsCount 2 // <<<=== buttons count, max.8 for PCF8574
+#define buttonsCount 2 // <<<=== buttons count, max.8 for PCF8574; IMPORTANT: all buttons must be externally pulled-up!
 #define longPush 1000 // ms
 
 static uint8_t lastButtonPushed = 255;
