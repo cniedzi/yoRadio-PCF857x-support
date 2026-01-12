@@ -7,6 +7,6 @@ The required connections are shown in the file "PCF857x connection diagram.jpg".
 
 To install the mod, you need to:
 - Replace the "player.cpp" file in the "yoradio-main\yoRadio\src\core" directory with the provided one, or
-- Manually add the three required sections to the appropriate parts of your 'player.cpp' file. Each section to be added is delimited by: /**************** EXTENDER ****************/.
+- Manually add the three required sections to the appropriate parts of your 'player.cpp' file. Each section to be added is delimited by lines: /**************** EXTENDER ****************/.
 
 Enjoy!
