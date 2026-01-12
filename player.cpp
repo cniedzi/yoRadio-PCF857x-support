@@ -17,14 +17,16 @@ Player player;
 QueueHandle_t playerQueue;
 
 /****************  EXTENDER ****************/
-// Mod by C.Niedzinski 2026
+// PCF8574 mod by C.Niedzinski 2026
+// ver. 1.01
 
 #include <Adafruit_PCF8574.h>
 #include <Preferences.h>
 Adafruit_PCF8574 pcf;
 Preferences extenderPreferences;
 
-#define buttonsCount 8 // <<<=== buttons count, max.8 for PCF8574; IMPORTANT: all buttons must be externally pulled-up!
+#define EXPANDER_PORTS 8 // number of ports of PCF8574
+#define buttonsCount 2 // <<<=== buttons count, max.8 for PCF8574
 #define longPush 1000 // ms
 
 static uint8_t lastButtonPushed = 255;
@@ -43,25 +45,26 @@ void handleExtender() {
         else {
           if (lastButtonPushed == p) {
             unsigned long pushButtonTime = millis() - pushButtonStart;
-            uint8_t temp[32] = {0};
+            uint8_t temp[EXPANDER_PORTS * 2] = {0};
             int offset = p * 2;
             if (pushButtonTime < longPush) { // SHORT Push - reading station number from flash memory and connection
-              if (extenderPreferences.getBytes("Buttons", temp, 32) == 32) {
+              if (extenderPreferences.getBytes("Buttons", temp, EXPANDER_PORTS * 2) == EXPANDER_PORTS * 2) {
                 uint16_t station = (static_cast<uint16_t>(temp[offset + 0])) | (static_cast<uint16_t>(temp[offset + 1]) << 8);
-                Serial.printf("===>>> BUTTON #%d - Retrieved station #%d <<<===\n", p, station);
                 if (station > 0 && station <= config.playlistLength()) {
+                  Serial.printf("===>>> BUTTON #%d - Retrieved station #%d <<<===\n", p, station);
                   config.lastStation(station);
                   player.sendCommand({PR_PLAY, config.lastStation()});
                 }
               }
+              else Serial.println("Stations not assigned");
             }
             else { // LONG Push - saving station to flash memory
               uint16_t newStation = config.lastStation();
               Serial.printf("===>>> BUTTON #%d - Saved station #%d <<<===\n", p, newStation);
-              extenderPreferences.getBytes("Buttons", temp, 32);
+              extenderPreferences.getBytes("Buttons", temp, EXPANDER_PORTS * 2);
               temp[offset] = static_cast<uint8_t>(newStation & 0xFF);
               temp[offset + 1] = static_cast<uint8_t>((newStation >> 8) & 0xFF);
-              extenderPreferences.putBytes("Buttons", temp, 32);
+              extenderPreferences.putBytes("Buttons", temp, EXPANDER_PORTS * 2);
             }
             lastButtonPushed = 255;
             break;
