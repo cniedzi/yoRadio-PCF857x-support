@@ -18,14 +18,17 @@ QueueHandle_t playerQueue;
 
 /****************  EXTENDER ****************/
 // PCF8574 mod by C.Niedzinski 2026
-// ver. 1.03
+// ver. 1.04
 
 #include <Adafruit_PCF8574.h>
 #include <Preferences.h>
 Adafruit_PCF8574 pcf;
 Preferences extenderPreferences;
 
+
 #define PCF857x_ADDRESS 0x20 // PCF857x I2C address
+#define PCF857x_SDA 32 // PCF857x I2C SDA Pin - IMPORTANT: It is recommended not to use the same I2C pins as for RTC to avoid any interference; this mod uses Wire1.
+#define PCF857x_SCL 33 // PCF857x I2C SCL Pin - IMPORTANT: It is recommended not to use the same I2C pins as for RTC to avoid any interference; this mod uses Wire1.
 #define EXPANDER_PORTS 8 // number of ports of PCF8574
 #define buttonsCount 2 // <<<=== buttons count, max.8 for PCF8574; IMPORTANT: all buttons must be externally pulled-up!
 #define longPush 1000 // ms
@@ -142,7 +145,8 @@ void Player::init() {
     Serial.println("===>>> Flash memory error <<<===");
   }
   else {
-    if (!pcf.begin(PCF857x_ADDRESS, &Wire)) {
+    Wire1.begin(PCF857x_SDA, PCF857x_SCL);
+    if (!pcf.begin(PCF857x_ADDRESS, &Wire1)) {
       Serial.println("===>>> PCF8574 not found :( <<<===");
     }
     else {
