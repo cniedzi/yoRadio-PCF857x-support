@@ -4,7 +4,9 @@ This mod enables the use of multiple buttons to handle favorite stations in yoRa
 A short button press retrieves the station (if already stored), while a long press (>1 sec) saves the current station to the slot assigned to that button.
 
 The required connections are shown in the file "PCF857x connection diagram.jpg".
-<br><br>**IMPORTANT**: It is recommended not to use the same I2C pins as for RTC (if someone uses it) to avoid any interference; this mod uses Wire(1) (while the yoRadio RTC uses Wire(0)).
+<br><br>**IMPORTANT**:
+- If the project uses an external RTC, the I2C's SDA and SCL pins for both the expander and the RTC can be the same (recommended).
+- If an I2C display is used in addition to the RTC, then the SDA and SCL pins for the expander must be the same as those used for the RTC!
 
 To install the mod, you need to:
 - Replace the "player.cpp" file in the "yoradio-main\yoRadio\src\core" directory with the provided one, or
@@ -18,7 +20,9 @@ Ten mod umożliwia korzystanie z wielu przycisków do obsługi ulubionych stacji
 
 Wymagane połączenia zostały przedstawione w pliku "PCF857x connection diagram.jpg".
 
-**WAŻNE**: Zaleca się, aby nie używać tych samych pinów I2C, co dla modułu zegara RTC (jeżeli ktoś go wykorzystuje), w celu uniknięcia zakłóceń. Ten mod korzysta z magistrali Wire(1), podczas gdy RTC w yoRadio korzysta z Wire(0).
+**WAŻNE**
+- Jeżeli projekt wykorzystuje zewnętrzny RTC, piny I2C SDA i SCL ekspandera oraz RTC mogą być takie same (zalecane).
+- Jeżeli oprócz RTC wykorzystywany jest wyświetlacz I2C, wtedy dla ekspandera należy wybrać piny SDA i SCL takie jak dla RTC!
 
 Aby zainstalować mod, należy:
 - Zastąpić plik "player.cpp" w katalogu yoradio-main\yoRadio\src\core plikiem z tego repozytorium, lub
