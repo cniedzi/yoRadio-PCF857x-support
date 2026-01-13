@@ -10,7 +10,7 @@ The required connections are shown in the file "PCF857x connection diagram.jpg".
 
 Installation:
 1. In Arduino IDE/Pioarduino add Adafruit PCF8574 library (https://github.com/adafruit/Adafruit_PCF8574)
-2. Replace the "player.cpp" file in the "yoradio-main\yoRadio\src\core" directory with the provided one, or manually add the three required sections to the appropriate parts of your "player.cpp" file. Each section to be added is delimited by lines: /**************** EXTENDER ****************/.
+2. Replace the "player.cpp" file in the "yoradio-main\yoRadio\src\core" directory with the provided one, or manually add the three required sections to the appropriate parts of your "player.cpp" file. Each section to be added is delimited by lines: /**************** EXTENDER ****************/ in the provided "player.cpp" file.
 3. In the above mentioned file "player.cpp" set the expander parameters according to your configuration (section: EXPANDER CONFIGURATION)
 4. Build & upload
 
@@ -28,7 +28,7 @@ Wymagane połączenia zostały przedstawione w pliku "PCF857x connection diagram
 
 Instalacja:
 1. W Arduino IDE/Pioarduino dodaj bibliotekę Adafruit PCF8574 (https://github.com/adafruit/Adafruit_PCF8574)
-2. Zastąp plik "player.cpp" w katalogu yoradio-main\yoRadio\src\core plikiem z tego repozytorium, lub ręcznie dodaj trzy wymagane sekcje w odpowiednich miejscach pliku "player.cpp". Każda z dodawanych sekcji jest ograniczona liniami: /**************** EXTENDER ****************/.
+2. Zastąp plik "player.cpp" w katalogu yoradio-main\yoRadio\src\core plikiem z tego repozytorium, lub ręcznie dodaj trzy wymagane sekcje w odpowiednich miejscach pliku "player.cpp". Każda z dodawanych sekcji jest ograniczona liniami: /**************** EXTENDER ****************/ w dostarczonym pliku "player.cpp".
 3. W wyżej wymienionym pliku „player.cpp” ustaw parametry ekspandera zgodnie ze swoją konfiguracją (sekcja: EXPANDER CONFIGURATION).
 4. Skompiluj i wgraj (Build & upload)
 
