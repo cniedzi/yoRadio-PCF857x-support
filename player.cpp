@@ -18,20 +18,26 @@ QueueHandle_t playerQueue;
 
 /****************  EXTENDER ****************/
 // PCF8574 mod by C.Niedzinski 2026
-// ver. 1.04
+// ver. 1.05
 
 #include <Adafruit_PCF8574.h>
 #include <Preferences.h>
 Adafruit_PCF8574 pcf;
 Preferences extenderPreferences;
 
+#define EXPANDER_PORTS 8 // number of ports of PCF8574
+#define longPush 1000 // ms
+
+//--------------------------------------------------------------------------
+// YOU HAVE TO SET THE BELOW DEFINITIONS ACCORDING TO YOUR CONFIGURATION !!!
 
 #define PCF857x_ADDRESS 0x20 // PCF857x I2C address
-#define PCF857x_SDA 32 // PCF857x I2C SDA Pin - IMPORTANT: It is recommended not to use the same I2C pins as for RTC to avoid any interference; this mod uses Wire1.
-#define PCF857x_SCL 33 // PCF857x I2C SCL Pin - IMPORTANT: It is recommended not to use the same I2C pins as for RTC to avoid any interference; this mod uses Wire1.
-#define EXPANDER_PORTS 8 // number of ports of PCF8574
-#define buttonsCount 2 // <<<=== buttons count, max.8 for PCF8574; IMPORTANT: all buttons must be externally pulled-up!
-#define longPush 1000 // ms
+#define PCF857x_SDA 32 // PCF857x I2C SDA Pin - the same I2C pins can be used for both the expander and the RTC
+#define PCF857x_SCL 33 // PCF857x I2C SCL Pin - the same I2C pins can be used for both the expander and the RTC
+#define buttonsCount 8 // <<<=== buttons used count, max.8 for PCF8574; IMPORTANT: all buttons must be externally pulled-up!
+//--------------------------------------------------------------------------
+
+
 
 bool extenderOK = false;
 static uint8_t lastButtonPushed = 255;
@@ -139,14 +145,25 @@ void Player::init() {
 
 
 
-  
   /****************  EXTENDER ****************/
+  #define RTC_USED (RTC_SDA!=255 && RTC_SCL!=255 && (RTC_MODULE==DS3231 || RTC_MODULE==DS1307))
+  #if RTC_USED
+    extern TwoWire RTCWire;
+    #if((PCF857x_SDA == RTC_SDA) && (PCF857x_SCL == RTC_SCL))
+      TwoWire &ExWire = RTCWire;
+    #else 
+      TwoWire &ExWire = Wire1;
+      ExWire.begin(PCF857x_SDA, PCF857x_SCL);
+    #endif
+  #else
+    TwoWire &ExWire = Wire1;
+    ExWire.begin(PCF857x_SDA, PCF857x_SCL);
+  #endif
   if (!extenderPreferences.begin("extender", false)) {
     Serial.println("===>>> Flash memory error <<<===");
   }
   else {
-    Wire1.begin(PCF857x_SDA, PCF857x_SCL);
-    if (!pcf.begin(PCF857x_ADDRESS, &Wire1)) {
+    if (!pcf.begin(PCF857x_ADDRESS, &ExWire)) {
       Serial.println("===>>> PCF8574 not found :( <<<===");
     }
     else {
