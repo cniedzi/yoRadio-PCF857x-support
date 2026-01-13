@@ -18,7 +18,7 @@ QueueHandle_t playerQueue;
 
 /****************  EXTENDER ****************/
 // PCF8574 mod by C.Niedzinski 2026
-// ver. 1.01
+// ver. 1.02
 
 #include <Adafruit_PCF8574.h>
 #include <Preferences.h>
@@ -29,6 +29,7 @@ Preferences extenderPreferences;
 #define buttonsCount 2 // <<<=== buttons count, max.8 for PCF8574; IMPORTANT: all buttons must be externally pulled-up!
 #define longPush 1000 // ms
 
+bool extenderOK = false;
 static uint8_t lastButtonPushed = 255;
 unsigned long pushButtonStart; 
 
@@ -137,20 +138,20 @@ void Player::init() {
   
   /****************  EXTENDER ****************/
   if (!extenderPreferences.begin("extender", false)) {
-    Serial.println("Flash memory error");
-    while (1);
+    Serial.println("===>>> Flash memory error <<<===");
   }
-  
-  if (!pcf.begin(0x20, &Wire)) {
-    Serial.println("PCF8574 not found :(");
-    while (1);
+  else {
+    if (!pcf.begin(0x20, &Wire)) {
+      Serial.println("===>>> PCF8574 not found :( <<<===");
+    }
+    else {
+      for (uint8_t p = 0; p < buttonsCount; p++) {
+        pcf.pinMode(p, INPUT);
+      }
+      Serial.println("===>>> PCF8574 found :) <<<===");
+      extenderOK = true;
+    }
   }
-
-  for (uint8_t p = 0; p < buttonsCount; p++) {
-    pcf.pinMode(p, INPUT);
-  }
-  
-  Serial.println("PCF8574 found :)");
   /****************  EXTENDER ****************/
 
 
@@ -293,7 +294,7 @@ void Player::loop() {
 
 
 /****************  EXTENDER ****************/
-handleExtender();
+if (extenderOK) handleExtender();
 /****************  EXTENDER ****************/
 
 
