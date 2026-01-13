@@ -18,13 +18,14 @@ QueueHandle_t playerQueue;
 
 /****************  EXTENDER ****************/
 // PCF8574 mod by C.Niedzinski 2026
-// ver. 1.02
+// ver. 1.03
 
 #include <Adafruit_PCF8574.h>
 #include <Preferences.h>
 Adafruit_PCF8574 pcf;
 Preferences extenderPreferences;
 
+#define PCF857x_ADDRESS 0x20 // PCF857x I2C address
 #define EXPANDER_PORTS 8 // number of ports of PCF8574
 #define buttonsCount 2 // <<<=== buttons count, max.8 for PCF8574; IMPORTANT: all buttons must be externally pulled-up!
 #define longPush 1000 // ms
@@ -141,7 +142,7 @@ void Player::init() {
     Serial.println("===>>> Flash memory error <<<===");
   }
   else {
-    if (!pcf.begin(0x20, &Wire)) {
+    if (!pcf.begin(PCF857x_ADDRESS, &Wire)) {
       Serial.println("===>>> PCF8574 not found :( <<<===");
     }
     else {
