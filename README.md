@@ -21,7 +21,7 @@ Wymagane połączenia zostały przedstawione w pliku "PCF857x connection diagram
 **WAŻNE**: Zaleca się, aby nie używać tych samych pinów I2C, co dla modułu zegara RTC (jeżeli ktoś go wykorzystuje), w celu uniknięcia zakłóceń. Ten mod korzysta z magistrali Wire(1), podczas gdy RTC w yoRadio korzysta z Wire(0).
 
 Aby zainstalować mod, należy:
-- Zastąpić plik "player.cpp" w katalogu yoradio-main\yoRadio\src\core plikiem dostarczonym w paczce, lub
+- Zastąpić plik "player.cpp" w katalogu yoradio-main\yoRadio\src\core plikiem z tego repozytorium, lub
 - Ręcznie dodać trzy wymagane sekcje w odpowiednich miejscach pliku "player.cpp". Każda z dodawanych sekcji jest ograniczona liniami: /**************** EXTENDER ****************/.
 
 Miłego korzystania!
