@@ -19,6 +19,8 @@ QueueHandle_t playerQueue;
 /****************  EXTENDER ****************/
 // PCF8574 mod by C.Niedzinski 2026
 // ver. 1.05
+//
+// In Arduino IDE/Pioarduino add Adafruit PCF8574 library (https://github.com/adafruit/Adafruit_PCF8574)
 
 #include <Adafruit_PCF8574.h>
 #include <Preferences.h>
@@ -29,7 +31,7 @@ Preferences extenderPreferences;
 #define longPush 1000 // ms
 
 //--------------------------------------------------------------------------
-// YOU HAVE TO SET THE BELOW DEFINITIONS ACCORDING TO YOUR CONFIGURATION !!!
+// EXPANDER CONFIGURATION - You have to set the below definitions according to your configuration !!!
 
 #define PCF857x_ADDRESS 0x20 // PCF857x I2C address
 #define PCF857x_SDA 32 // PCF857x I2C SDA Pin - the same I2C pins can be used for both the expander and the RTC
